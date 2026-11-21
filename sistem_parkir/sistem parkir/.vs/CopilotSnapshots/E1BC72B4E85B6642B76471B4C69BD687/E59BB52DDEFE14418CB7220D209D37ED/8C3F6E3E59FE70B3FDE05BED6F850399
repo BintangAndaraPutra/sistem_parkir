@@ -1,0 +1,267 @@
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+
+namespace TebakAngka
+{
+    public partial class Form1 : Form
+    {
+        private readonly string databaseFile;
+        private readonly string masterConnection;
+        private readonly string databaseConnection;
+        private Panel header;
+        private RadioButton btnMobil;
+        private RadioButton btnMotor;
+        private TextBox txtPlat;
+        private DataGridView grid;
+        private Label lblClock;
+        private Timer clockTimer;
+        private string jenisTerpilih = "Mobil";
+
+        private readonly Color blue = Color.FromArgb(134, 196, 236);
+        private readonly Color darkBlue = Color.FromArgb(17, 47, 72);
+        private readonly Color green = Color.FromArgb(20, 166, 76);
+        private readonly Color red = Color.FromArgb(220, 42, 42);
+
+        public Form1()
+        {
+            InitializeComponent();
+            databaseFile = Path.Combine(Application.UserAppDataPath, "parkir.mdf");
+            masterConnection = @"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;Initial Catalog=master;";
+
+            databaseConnection = @"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;AttachDbFilename=" + databaseFile + @";";
+            BuildInterface();
+            try
+            {
+                InitializeDatabase();
+                LoadActiveVehicles();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Database belum dapat dibuka. Pastikan SQL Server LocalDB tersedia.\n\n" + ex.Message,
+                    "Koneksi database", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void BuildInterface()
+        {
+            BackColor = Color.White;
+            MinimumSize = new Size(900, 560);
+            Font = new Font("Segoe UI", 10F);
+
+            header = new Panel { Dock = DockStyle.Top, Height = 126, BackColor = blue };
+            Controls.Add(header);
+            header.Paint += Header_Paint;
+
+            var title = new Label { Text = "Sistem Parkir", ForeColor = Color.Black, Font = new Font("Segoe UI", 27F, FontStyle.Bold), Location = new Point(170, 17), AutoSize = true };
+            var subtitle = new Label { Text = "Selamat Datang", ForeColor = Color.FromArgb(67, 102, 127), Font = new Font("Segoe UI", 19F, FontStyle.Bold), Location = new Point(171, 63), AutoSize = true };
+            header.Controls.Add(title);
+            header.Controls.Add(subtitle);
+            lblClock = new Label { ForeColor = Color.Black, Font = new Font("Segoe UI", 16F, FontStyle.Bold), Location = new Point(850, 29), AutoSize = true };
+            header.Controls.Add(lblClock);
+            clockTimer = new Timer { Interval = 1000 };
+            clockTimer.Tick += delegate { UpdateClock(); };
+            clockTimer.Start();
+            UpdateClock();
+
+            var inputPanel = new Panel
+            {
+                Location = new Point(30, 150),
+                Width = ClientSize.Width - 60,
+                Height = 92,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.FromArgb(239, 239, 239),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Controls.Add(inputPanel);
+            inputPanel.Resize += delegate { LayoutInput(inputPanel); };
+            LayoutInput(inputPanel);
+
+            var vehicleLabel = new Label { Text = "Jenis Kendaraan :", Font = new Font("Segoe UI", 10F, FontStyle.Bold), Location = new Point(18, 8), AutoSize = true };
+            inputPanel.Controls.Add(vehicleLabel);
+            btnMobil = CreateVehicleButton("🚗  Mobil", true);
+            btnMotor = CreateVehicleButton("🏍  Motor", false);
+            inputPanel.Controls.Add(btnMobil);
+            inputPanel.Controls.Add(btnMotor);
+            btnMobil.CheckedChanged += VehicleChanged;
+            btnMotor.CheckedChanged += VehicleChanged;
+
+            var plateLabel = new Label { Text = "Plat Nomor :", Font = new Font("Segoe UI", 10F, FontStyle.Bold), AutoSize = true };
+            inputPanel.Controls.Add(plateLabel);
+            txtPlat = new TextBox { Font = new Font("Segoe UI", 14F), CharacterCasing = CharacterCasing.Upper, MaxLength = 12 };
+            inputPanel.Controls.Add(txtPlat);
+            var masuk = CreateActionButton("⇥  Masuk", green);
+            var keluar = CreateActionButton("⇤  Keluar", red);
+            inputPanel.Controls.Add(masuk);
+            inputPanel.Controls.Add(keluar);
+            masuk.Click += Masuk_Click;
+            keluar.Click += Keluar_Click;
+
+            var sectionTitle = new Label
+            {
+                Text = "Kendaraan Aktif",
+                BackColor = blue,
+                ForeColor = Color.Black,
+                Font = new Font("Segoe UI", 17F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(18, 0, 0, 0),
+                Location = new Point(30, 265),
+                Width = ClientSize.Width - 60,
+                Height = 38,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+            };
+            Controls.Add(sectionTitle);
+            sectionTitle.Resize += delegate { if (grid != null) grid.Width = sectionTitle.Width; };
+
+            grid = new DataGridView
+            {
+                Location = new Point(30, 303),
+                Width = ClientSize.Width - 60,
+                Height = 260,
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                ReadOnly = true,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                GridColor = Color.Gray
+            };
+            grid.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(220, 220, 220),
+                ForeColor = Color.Black,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Alignment = DataGridViewContentAlignment.MiddleCenter
+            };
+            grid.DefaultCellStyle = new DataGridViewCellStyle
+            {
+                Font = new Font("Segoe UI", 10F),
+                Alignment = DataGridViewContentAlignment.MiddleCenter,
+                SelectionBackColor = Color.FromArgb(190, 225, 248),
+                SelectionForeColor = Color.Black
+            };
+            grid.Columns.Add("No", "NO");
+            grid.Columns.Add("Jenis", "JENIS");
+            grid.Columns.Add("Plat", "PLAT NOMOR");
+            grid.Columns.Add("Masuk", "WAKTU MASUK");
+            grid.Columns.Add("Estimasi", "ESTIMASI BIAYA");
+            grid.Columns[0].FillWeight = 35;
+            Controls.Add(grid);
+        }
+
+        private void LayoutInput(Panel p)
+        {
+            int right = p.ClientSize.Width;
+            btnMobil.Location = new Point(18, 34); btnMobil.Size = new Size(105, 42);
+            btnMotor.Location = new Point(127, 34); btnMotor.Size = new Size(105, 42);
+            txtPlat.Location = new Point(275, 28); txtPlat.Size = new Size(Math.Max(150, right - 585), 42);
+            foreach (Control c in p.Controls)
+                if (c is Label && c.Text == "Plat Nomor :") c.Location = new Point(275, 8);
+            Control masuk = p.Controls[p.Controls.Count - 2];
+            Control keluar = p.Controls[p.Controls.Count - 1];
+            keluar.Location = new Point(right - 100, 19); keluar.Size = new Size(90, 50);
+            masuk.Location = new Point(right - 202, 19); masuk.Size = new Size(90, 50);
+        }
+
+        private RadioButton CreateVehicleButton(string text, bool selected)
+        {
+            return new RadioButton { Text = text, Appearance = Appearance.Button, TextAlign = ContentAlignment.MiddleCenter, FlatStyle = FlatStyle.Flat, BackColor = Color.FromArgb(37, 153, 222), ForeColor = Color.Black, Font = new Font("Segoe UI", 10F, FontStyle.Bold), Checked = selected, TabStop = false };
+        }
+
+        private Button CreateActionButton(string text, Color color)
+        {
+            return new Button { Text = text, BackColor = color, ForeColor = Color.Black, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 10F, FontStyle.Bold), Cursor = Cursors.Hand };
+        }
+
+        private void UpdateClock()
+        {
+            if (lblClock == null) return;
+            lblClock.Text = DateTime.Now.ToString("HH : mm : ss") + Environment.NewLine + DateTime.Now.ToString("dd/MM/yyyy");
+        }
+
+        private void Header_Paint(object sender, PaintEventArgs e)
+        {
+            using (var pen = new Pen(Color.Black, 2)) e.Graphics.DrawLine(pen, 150, 8, 150, 112);
+            using (var pen = new Pen(Color.Black, 3)) e.Graphics.DrawEllipse(pen, header.Width - 185, 29, 40, 40);
+            e.Graphics.DrawLine(Pens.Black, header.Width - 165, 49, header.Width - 165, 37);
+            e.Graphics.DrawLine(Pens.Black, header.Width - 165, 49, header.Width - 155, 57);
+        }
+
+        private void VehicleChanged(object sender, EventArgs e)
+        {
+            if (btnMobil.Checked) jenisTerpilih = "Mobil";
+            else if (btnMotor.Checked) jenisTerpilih = "Motor";
+        }
+
+        private void InitializeDatabase()
+        {
+            Directory.CreateDirectory(Application.UserAppDataPath);
+            if (!File.Exists(databaseFile))
+            {
+                using (var con = new SqlConnection(masterConnection))
+                using (var cmd = new SqlCommand("CREATE DATABASE [ParkirDb] ON PRIMARY (NAME = N'ParkirDb', FILENAME = N'" + databaseFile.Replace("'", "''") + "')", con))
+                {
+                    con.Open(); cmd.ExecuteNonQuery();
+                }
+            }
+            using (var con = new SqlConnection(databaseConnection))
+            using (var cmd = new SqlCommand(@"IF OBJECT_ID('dbo.ParkingTransactions') IS NULL
+                CREATE TABLE dbo.ParkingTransactions (Id INT IDENTITY(1,1) PRIMARY KEY, VehicleType NVARCHAR(20) NOT NULL, PlateNumber NVARCHAR(12) NOT NULL, EntryTime DATETIME NOT NULL, ExitTime DATETIME NULL, TotalCost INT NULL);", con))
+            { con.Open(); cmd.ExecuteNonQuery(); }
+        }
+
+        private void Masuk_Click(object sender, EventArgs e)
+        {
+            string plat = txtPlat.Text.Trim();
+            if (plat.Length == 0) { MessageBox.Show("Masukkan plat nomor kendaraan.", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Information); txtPlat.Focus(); return; }
+            using (var con = new SqlConnection(databaseConnection))
+            using (var cmd = new SqlCommand("INSERT INTO ParkingTransactions (VehicleType, PlateNumber, EntryTime) VALUES (@jenis,@plat,@waktu)", con))
+            {
+                cmd.Parameters.AddWithValue("@jenis", jenisTerpilih); cmd.Parameters.AddWithValue("@plat", plat); cmd.Parameters.AddWithValue("@waktu", DateTime.Now);
+                con.Open(); cmd.ExecuteNonQuery();
+            }
+            txtPlat.Clear(); LoadActiveVehicles();
+        }
+
+        private void Keluar_Click(object sender, EventArgs e)
+        {
+            string plat = txtPlat.Text.Trim();
+            if (plat.Length == 0) { MessageBox.Show("Masukkan plat nomor kendaraan yang keluar.", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Information); txtPlat.Focus(); return; }
+            using (var con = new SqlConnection(databaseConnection))
+            using (var cmd = new SqlCommand("SELECT TOP 1 Id, VehicleType, EntryTime FROM ParkingTransactions WHERE PlateNumber=@plat AND ExitTime IS NULL ORDER BY EntryTime", con))
+            {
+                cmd.Parameters.AddWithValue("@plat", plat); con.Open();
+                using (var r = cmd.ExecuteReader())
+                {
+                    if (!r.Read()) { MessageBox.Show("Kendaraan aktif dengan plat tersebut tidak ditemukan.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
+                    int id = r.GetInt32(0); string jenis = r.GetString(1); DateTime masuk = r.GetDateTime(2); DateTime keluar = DateTime.Now;
+                    int tarif = jenis == "Mobil" ? 3000 : 2000; int biayaAwal = jenis == "Mobil" ? 5000 : 3000; int jam = Math.Max(1, (int)Math.Ceiling((keluar - masuk).TotalHours)); int total = biayaAwal + ((jam - 1) * tarif);
+                    r.Close();
+                    using (var update = new SqlCommand("UPDATE ParkingTransactions SET ExitTime=@keluar, TotalCost=@biaya WHERE Id=@id", con))
+                    { update.Parameters.AddWithValue("@keluar", keluar); update.Parameters.AddWithValue("@biaya", total); update.Parameters.AddWithValue("@id", id); update.ExecuteNonQuery(); }
+                    MessageBox.Show("Kendaraan keluar. Total biaya: " + total.ToString("N0") + "", "Transaksi selesai", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            txtPlat.Clear(); LoadActiveVehicles();
+        }
+
+        private void LoadActiveVehicles()
+        {
+            if (grid == null || !File.Exists(databaseFile)) return;
+            try
+            {
+                grid.Rows.Clear();
+                using (var con = new SqlConnection(databaseConnection))
+                using (var cmd = new SqlCommand("SELECT VehicleType, PlateNumber, EntryTime FROM ParkingTransactions WHERE ExitTime IS NULL ORDER BY EntryTime", con))
+                { con.Open(); using (var r = cmd.ExecuteReader()) { int no = 1; while (r.Read()) { string jenis = r.GetString(0); DateTime masuk = r.GetDateTime(2); int biaya = jenis == "Mobil" ? 5000 : 3000; grid.Rows.Add(no++, jenis, r.GetString(1), masuk.ToString("dd/MM/yyyy HH:mm"), "Rp " + biaya.ToString("N0")); } } }
+            }
+            catch (SqlException) { }
+        }
+    }
+}

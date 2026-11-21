@@ -1,0 +1,49 @@
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\bin\Debug\TebakAngka.exe.config
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\bin\Debug\TebakAngka.exe
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\bin\Debug\TebakAngka.pdb
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.csproj.AssemblyReference.cache
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.Form1.resources
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.Properties.Resources.resources
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.csproj.GenerateResource.cache
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.csproj.CoreCompileInputs.cache
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.exe
+D:\coding\pl\uts\TebakAngka\TebakAngka\TebakAngka\obj\Debug\TebakAngka.pdb
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\TebakAngka.exe.config
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\TebakAngka.exe
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\TebakAngka.pdb
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.csproj.AssemblyReference.cache
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.Form1.resources
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.Properties.Resources.resources
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.csproj.GenerateResource.cache
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.csproj.CoreCompileInputs.cache
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.exe
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.pdb
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\BouncyCastle.Cryptography.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\Google.Protobuf.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\K4os.Compression.LZ4.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\K4os.Compression.LZ4.Streams.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\K4os.Hash.xxHash.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\MySql.Data.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Buffers.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Configuration.ConfigurationManager.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.IO.Pipelines.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Memory.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Numerics.Vectors.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\ZstdSharp.dll
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\BouncyCastle.Cryptography.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\Google.Protobuf.pdb
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\Google.Protobuf.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\K4os.Compression.LZ4.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\K4os.Compression.LZ4.Streams.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\K4os.Hash.xxHash.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\MySql.Data.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Buffers.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Configuration.ConfigurationManager.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.IO.Pipelines.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Memory.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Numerics.Vectors.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\sistem_parkir\sistem parkir\TebakAngka\obj\Debug\TebakAngka.csproj.Up2Date

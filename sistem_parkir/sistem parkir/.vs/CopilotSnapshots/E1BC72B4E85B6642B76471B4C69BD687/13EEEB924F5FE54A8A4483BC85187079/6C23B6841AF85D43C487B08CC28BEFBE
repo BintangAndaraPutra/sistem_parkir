@@ -1,0 +1,136 @@
+﻿namespace TebakAngka
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.btnTebak = new System.Windows.Forms.Button();
+            this.lblJudul = new System.Windows.Forms.Label();
+            this.lblInstruksi = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.txtAngka = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
+            // 
+            // btnTebak
+            // 
+            this.btnTebak.BackColor = System.Drawing.Color.RoyalBlue;
+            this.btnTebak.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTebak.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTebak.Font = new System.Drawing.Font("Segoe UI", 31.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTebak.ForeColor = System.Drawing.Color.White;
+            this.btnTebak.Location = new System.Drawing.Point(299, 338);
+            this.btnTebak.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnTebak.Name = "btnTebak";
+            this.btnTebak.Size = new System.Drawing.Size(305, 85);
+            this.btnTebak.TabIndex = 0;
+            this.btnTebak.Text = "Tebak!";
+            this.btnTebak.UseVisualStyleBackColor = false;
+            // 
+            // lblJudul
+            // 
+            this.lblJudul.AutoSize = true;
+            this.lblJudul.BackColor = System.Drawing.Color.Transparent;
+            this.lblJudul.Font = new System.Drawing.Font("Segoe UI", 64.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblJudul.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblJudul.Location = new System.Drawing.Point(93, 35);
+            this.lblJudul.Name = "lblJudul";
+            this.lblJudul.Size = new System.Drawing.Size(713, 145);
+            this.lblJudul.TabIndex = 1;
+            this.lblJudul.Text = "Tebak Angka";
+            // 
+            // lblInstruksi
+            // 
+            this.lblInstruksi.AutoSize = true;
+            this.lblInstruksi.BackColor = System.Drawing.Color.Transparent;
+            this.lblInstruksi.Font = new System.Drawing.Font("Segoe UI", 25.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInstruksi.ForeColor = System.Drawing.Color.Black;
+            this.lblInstruksi.Location = new System.Drawing.Point(86, 180);
+            this.lblInstruksi.Name = "lblInstruksi";
+            this.lblInstruksi.Size = new System.Drawing.Size(711, 60);
+            this.lblInstruksi.TabIndex = 2;
+            this.lblInstruksi.Text = "Masukkan angka antara 1 dan 100 :";
+            this.lblInstruksi.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 25.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.ForeColor = System.Drawing.Color.Black;
+            this.lblStatus.Location = new System.Drawing.Point(176, 441);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(524, 60);
+            this.lblStatus.TabIndex = 3;
+            this.lblStatus.Text = "Kesempatan: 10  |  Skor: 0";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtAngka
+            // 
+            this.txtAngka.BackColor = System.Drawing.Color.White;
+            this.txtAngka.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtAngka.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAngka.ForeColor = System.Drawing.Color.Black;
+            this.txtAngka.Location = new System.Drawing.Point(96, 260);
+            this.txtAngka.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtAngka.Name = "txtAngka";
+            this.txtAngka.Size = new System.Drawing.Size(690, 61);
+            this.txtAngka.TabIndex = 4;
+            this.txtAngka.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(900, 647);
+            this.Controls.Add(this.txtAngka);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblInstruksi);
+            this.Controls.Add(this.lblJudul);
+            this.Controls.Add(this.btnTebak);
+            this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Tebak Angka";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Button btnTebak;
+        private System.Windows.Forms.Label lblJudul;
+        private System.Windows.Forms.Label lblInstruksi;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.TextBox txtAngka;
+    }
+}
+
